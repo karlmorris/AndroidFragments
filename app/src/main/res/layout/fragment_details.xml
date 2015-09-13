@@ -2,8 +2,21 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" tools:context="edu.temple.basicfragments.DetailsFragment"
     android:background="#9acaff">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="Details of items selected from\nthe navigation fragment\nwould go here.\nIt should have a default display." />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="@string/default_details_message"
+            android:id="@+id/detailsHeadingTextView"
+            android:gravity="center_horizontal"
+            android:textSize="25sp"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/planetDisplay"/>
+    </LinearLayout>
 
 </FrameLayout>

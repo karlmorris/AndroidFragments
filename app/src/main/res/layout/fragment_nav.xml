@@ -2,8 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" tools:context="edu.temple.basicfragments.NavFragment"
     android:background="#00ffac">
-
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="Navigation items.\nGood place for\n an AdapterView." />
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/navListView"
+            android:layout_gravity="top" />
+    </ScrollView>
 </FrameLayout>

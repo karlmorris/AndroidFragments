@@ -1,15 +1,14 @@
 package edu.temple.basicfragments;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements NavFragment.OnFragmentInteractionListener {
 
     boolean twoPanes;
 
@@ -22,19 +21,21 @@ public class MainActivity extends Activity {
         twoPanes = (findViewById(R.id.fragment_details) != null);
 
         //  Load navigation fragment by default
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.fragment_nav, new NavFragment());
-        fragmentTransaction.commit();
+
+        Fragment navFragment = new NavFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putStringArray(NavFragment.dataKey, getResources().getStringArray(R.array.planets));
+        navFragment.setArguments(bundle);
+
+        loadFragment(R.id.fragment_nav, navFragment, false);
 
         /*
          *  Check if details pain is visible in current layout (e.g. large or landscape)
          *  and load fragment if true.
          */
         if (twoPanes){
-            fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.add(R.id.fragment_details, new DetailsFragment());
-            fragmentTransaction.commit();
+            loadFragment(R.id.fragment_details, new DetailsFragment(), false);
         }
     }
 
@@ -46,27 +47,26 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.switch_fragments) {
-            //  Only display switch action if in single pane mode
-            if (!twoPanes) {
-                doTransition();
-            } else {
-                Toast.makeText(MainActivity.this, "Action Disabled", Toast.LENGTH_SHORT).show();
-            }
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
-    private void doTransition(){
-        getFragmentManager()
+    private void loadFragment(int paneId, Fragment fragment, boolean placeOnBackstack){
+        FragmentTransaction ft = getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_nav, new DetailsFragment())
-                .addToBackStack(null)
-                .commit();
+                .replace(paneId, fragment);
+        if (placeOnBackstack)
+                ft.addToBackStack(null);
+        ft.commit();
     }
 
+    @Override
+    public void displayPlanetInfo(String planetName) {
+        Fragment detailsFragment = new DetailsFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putString(DetailsFragment.dataKey, planetName);
+        detailsFragment.setArguments(bundle);
+
+        loadFragment(twoPanes ? R.id.fragment_details : R.id.fragment_nav, detailsFragment, true);
+    }
 }
