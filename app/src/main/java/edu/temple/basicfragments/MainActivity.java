@@ -2,7 +2,6 @@ package edu.temple.basicfragments;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,6 +10,7 @@ import android.view.MenuItem;
 public class MainActivity extends Activity implements NavFragment.OnFragmentInteractionListener {
 
     boolean twoPanes;
+    Fragment detailsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +48,14 @@ public class MainActivity extends Activity implements NavFragment.OnFragmentInte
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == R.id.action_toggle_image && detailsFragment != null){
+            ((DetailsFragment) detailsFragment)
+                    .setImageVisibility(!((DetailsFragment) detailsFragment).isImageVisibile());
+        }
+
         return super.onOptionsItemSelected(item);
     }
-
 
     //  Load fragment in a specified frame
     private void loadFragment(int paneId, Fragment fragment, boolean placeOnBackstack){
@@ -64,7 +69,7 @@ public class MainActivity extends Activity implements NavFragment.OnFragmentInte
 
     @Override
     public void displayPlanetInfo(String planetName) {
-        Fragment detailsFragment = new DetailsFragment();
+        detailsFragment = new DetailsFragment();
 
         Bundle bundle = new Bundle();
         bundle.putString(DetailsFragment.dataKey, planetName);
@@ -72,4 +77,6 @@ public class MainActivity extends Activity implements NavFragment.OnFragmentInte
 
         loadFragment(twoPanes ? R.id.fragment_details : R.id.fragment_nav, detailsFragment, !twoPanes);
     }
+
+
 }

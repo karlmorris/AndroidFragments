@@ -16,6 +16,8 @@ public class DetailsFragment extends Fragment {
 
     public static final String dataKey = "bundle_data_key";
 
+    ImageView planetDisplay;
+
     public static DetailsFragment newInstance() {
         return new DetailsFragment();
     }
@@ -38,7 +40,7 @@ public class DetailsFragment extends Fragment {
 
             headerTextView.setText(planetName.toUpperCase());
 
-            ImageView planetDisplay = (ImageView) v.findViewById(R.id.planetDisplay);
+            planetDisplay = (ImageView) v.findViewById(R.id.planetDisplay);
 
             final String[] planets = getResources().getStringArray(R.array.planets);
 
@@ -64,6 +66,30 @@ public class DetailsFragment extends Fragment {
             planetDisplay.setImageResource(imageToDisplay);
         }
         return v;
+    }
+
+    /*
+     *  Part of our fragment's API. Set visibility of the imagewiew.
+     *
+     */
+    public void setImageVisibility(boolean visibility) {
+        if (planetDisplay != null) {
+            if (visibility)
+                planetDisplay.setVisibility(View.VISIBLE);
+            else
+                planetDisplay.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    /*
+     *  Part of our fragment's API. Retrieve current visibility of the imageview.
+     *
+     */
+    public boolean isImageVisibile(){
+        if (planetDisplay != null)
+            return planetDisplay.getVisibility() == View.VISIBLE;
+        else
+            return false;
     }
 
 }
