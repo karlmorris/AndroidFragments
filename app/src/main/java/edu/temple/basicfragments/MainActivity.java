@@ -70,6 +70,6 @@ public class MainActivity extends Activity implements NavFragment.OnFragmentInte
         bundle.putString(DetailsFragment.dataKey, planetName);
         detailsFragment.setArguments(bundle);
 
-        loadFragment(twoPanes ? R.id.fragment_details : R.id.fragment_nav, detailsFragment, true);
+        loadFragment(twoPanes ? R.id.fragment_details : R.id.fragment_nav, detailsFragment, !twoPanes);
     }
 }
