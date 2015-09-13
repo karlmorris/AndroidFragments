@@ -24,6 +24,7 @@ public class MainActivity extends Activity implements NavFragment.OnFragmentInte
 
         Fragment navFragment = new NavFragment();
 
+        //  Place data for the fragment to use. Must be called before it's attached to an activity.
         Bundle bundle = new Bundle();
         bundle.putStringArray(NavFragment.dataKey, getResources().getStringArray(R.array.planets));
         navFragment.setArguments(bundle);
@@ -50,6 +51,8 @@ public class MainActivity extends Activity implements NavFragment.OnFragmentInte
         return super.onOptionsItemSelected(item);
     }
 
+
+    //  Load fragment in a specified frame
     private void loadFragment(int paneId, Fragment fragment, boolean placeOnBackstack){
         FragmentTransaction ft = getFragmentManager()
                 .beginTransaction()
