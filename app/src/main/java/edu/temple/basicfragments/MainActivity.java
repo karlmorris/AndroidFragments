@@ -2,6 +2,7 @@ package edu.temple.basicfragments;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.Menu;
@@ -59,12 +60,15 @@ public class MainActivity extends Activity implements NavFragment.OnFragmentInte
 
     //  Load fragment in a specified frame
     private void loadFragment(int paneId, Fragment fragment, boolean placeOnBackstack){
-        FragmentTransaction ft = getFragmentManager()
-                .beginTransaction()
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction()
                 .replace(paneId, fragment);
         if (placeOnBackstack)
                 ft.addToBackStack(null);
         ft.commit();
+
+        //  Ensure fragment is attachecd before attempting to call its public methods
+        fm.executePendingTransactions();
     }
 
     @Override
