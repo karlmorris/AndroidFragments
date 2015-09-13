@@ -9,7 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements NavFragment.OnFragmentInteractionListener {
+public class MainActivity extends Activity {
 
     boolean twoPanes;
 
@@ -69,8 +69,4 @@ public class MainActivity extends Activity implements NavFragment.OnFragmentInte
                 .commit();
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-        // Take data from the Nav fragment and perform action in the details fragment
-    }
 }
