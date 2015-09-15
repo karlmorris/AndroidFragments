@@ -49,11 +49,16 @@ public class MainActivity extends Activity implements NavFragment.OnFragmentInte
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        //  Get the fragment housed in the details pane (The current DetailsFragment instance)
-        DetailsFragment detailsFragment = (DetailsFragment) getFragmentManager().findFragmentById(R.id.fragment_details);
-        if (item.getItemId() == R.id.action_toggle_image && detailsFragment != null){
-            ((DetailsFragment) detailsFragment)
-                    .setImageVisibility(!((DetailsFragment) detailsFragment).isImageVisibile());
+        //  Get the current instance of DetailsFragment if visible and toggle image visibility
+        Fragment fragment;
+        if (twoPanes)
+            fragment = getFragmentManager().findFragmentById(R.id.fragment_details);
+        else
+            fragment = getFragmentManager().findFragmentById(R.id.fragment_nav);
+
+        if (item.getItemId() == R.id.action_toggle_image && fragment instanceof DetailsFragment){
+            ((DetailsFragment) fragment)
+                    .setImageVisibility(!((DetailsFragment) fragment).isImageVisibile());
         }
 
         return super.onOptionsItemSelected(item);
