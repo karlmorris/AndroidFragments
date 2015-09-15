@@ -11,7 +11,6 @@ import android.view.MenuItem;
 public class MainActivity extends Activity implements NavFragment.OnFragmentInteractionListener {
 
     boolean twoPanes;
-    Fragment detailsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +49,8 @@ public class MainActivity extends Activity implements NavFragment.OnFragmentInte
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
+        //  Get the fragment housed in the details pane (The current DetailsFragment instance)
+        DetailsFragment detailsFragment = (DetailsFragment) getFragmentManager().findFragmentById(R.id.fragment_details);
         if (item.getItemId() == R.id.action_toggle_image && detailsFragment != null){
             ((DetailsFragment) detailsFragment)
                     .setImageVisibility(!((DetailsFragment) detailsFragment).isImageVisibile());
@@ -73,7 +74,7 @@ public class MainActivity extends Activity implements NavFragment.OnFragmentInte
 
     @Override
     public void displayPlanetInfo(String planetName) {
-        detailsFragment = new DetailsFragment();
+        DetailsFragment detailsFragment = new DetailsFragment();
 
         Bundle bundle = new Bundle();
         bundle.putString(DetailsFragment.dataKey, planetName);
