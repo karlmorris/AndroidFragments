@@ -33,10 +33,17 @@ public class MainActivity extends Activity implements NavFragment.OnFragmentInte
 
         /*
          *  Check if details pain is visible in current layout (e.g. large or landscape)
-         *  and load fragment if true.
+         *  and load fragment if true. Remove stale fragment if false.
          */
         if (twoPanes){
             loadFragment(R.id.fragment_details, new DetailsFragment(), false);
+        } else {
+            Fragment fragment = getFragmentManager().findFragmentById(R.id.fragment_details);
+            if (fragment != null)
+            getFragmentManager()
+                    .beginTransaction()
+                    .remove(fragment)
+                    .commit();
         }
     }
 
@@ -48,18 +55,6 @@ public class MainActivity extends Activity implements NavFragment.OnFragmentInte
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        //  Get the current instance of DetailsFragment if visible and toggle image visibility
-        Fragment fragment;
-        if (twoPanes)
-            fragment = getFragmentManager().findFragmentById(R.id.fragment_details);
-        else
-            fragment = getFragmentManager().findFragmentById(R.id.fragment_nav);
-
-        if (item.getItemId() == R.id.action_toggle_image && fragment instanceof DetailsFragment){
-            ((DetailsFragment) fragment)
-                    .setImageVisibility(!((DetailsFragment) fragment).isImageVisibile());
-        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -79,13 +74,18 @@ public class MainActivity extends Activity implements NavFragment.OnFragmentInte
 
     @Override
     public void displayPlanetInfo(String planetName) {
-        DetailsFragment detailsFragment = new DetailsFragment();
+        Fragment detailsFragment;
+        if (twoPanes) {
+            detailsFragment = getFragmentManager().findFragmentById(R.id.fragment_details);
+            ((DetailsFragment) detailsFragment).displayPlanet(planetName);
+        } else {
+            detailsFragment = new DetailsFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString(DetailsFragment.dataKey, planetName);
+            detailsFragment.setArguments(bundle);
 
-        Bundle bundle = new Bundle();
-        bundle.putString(DetailsFragment.dataKey, planetName);
-        detailsFragment.setArguments(bundle);
-
-        loadFragment(twoPanes ? R.id.fragment_details : R.id.fragment_nav, detailsFragment, !twoPanes);
+            loadFragment(twoPanes ? R.id.fragment_details : R.id.fragment_nav, detailsFragment, !twoPanes);
+        }
     }
 
 
