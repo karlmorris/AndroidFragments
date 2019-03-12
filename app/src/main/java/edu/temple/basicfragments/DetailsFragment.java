@@ -17,9 +17,12 @@ public class DetailsFragment extends Fragment {
     public static final String dataKey = "bundle_data_key";
 
     ImageView planetDisplay;
+    TextView headerTextView;
 
-    public static DetailsFragment newInstance() {
-        return new DetailsFragment();
+    public static DetailsFragment newInstance(Bundle bundle) {
+        DetailsFragment fragment =  new DetailsFragment();
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     public DetailsFragment() {
@@ -32,41 +35,41 @@ public class DetailsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_details, container, false);
 
-        TextView headerTextView = (TextView) v.findViewById(R.id.detailsHeadingTextView);
+        headerTextView = (TextView) v.findViewById(R.id.detailsHeadingTextView);
+        planetDisplay = (ImageView) v.findViewById(R.id.planetDisplay);
 
-        if (getArguments() != null && getArguments().getString(dataKey) != null) {
-
-            String planetName = getArguments().getString(dataKey);
-
-            headerTextView.setText(planetName.toUpperCase());
-
-            planetDisplay = (ImageView) v.findViewById(R.id.planetDisplay);
-
-            final String[] planets = getResources().getStringArray(R.array.planets);
-
-            int imageToDisplay = 0;
-
-            if (planetName.equals(planets[0]))
-                imageToDisplay = R.drawable.mercury;
-            else if (planetName.equals(planets[1]))
-                imageToDisplay = R.drawable.venus;
-            else if (planetName.equals(planets[2]))
-                imageToDisplay = R.drawable.earth;
-            else if (planetName.equals(planets[3]))
-                imageToDisplay = R.drawable.mars;
-            else if (planetName.equals(planets[4]))
-                imageToDisplay = R.drawable.jupiter;
-            else if (planetName.equals(planets[5]))
-                imageToDisplay = R.drawable.saturn;
-            else if (planetName.equals(planets[6]))
-                imageToDisplay = R.drawable.uranus;
-            else if (planetName.equals(planets[7]))
-                imageToDisplay = R.drawable.neptune;
-
-            planetDisplay.setImageResource(imageToDisplay);
-        }
         return v;
     }
+
+
+    public void setPlanetToShow(String planetName) {
+        assert planetName != null;
+        headerTextView.setText(planetName.toUpperCase());
+
+        final String[] planets = getResources().getStringArray(R.array.planets);
+
+        int imageToDisplay = 0;
+
+        if (planetName.equals(planets[0]))
+            imageToDisplay = R.drawable.mercury;
+        else if (planetName.equals(planets[1]))
+            imageToDisplay = R.drawable.venus;
+        else if (planetName.equals(planets[2]))
+            imageToDisplay = R.drawable.earth;
+        else if (planetName.equals(planets[3]))
+            imageToDisplay = R.drawable.mars;
+        else if (planetName.equals(planets[4]))
+            imageToDisplay = R.drawable.jupiter;
+        else if (planetName.equals(planets[5]))
+            imageToDisplay = R.drawable.saturn;
+        else if (planetName.equals(planets[6]))
+            imageToDisplay = R.drawable.uranus;
+        else if (planetName.equals(planets[7]))
+            imageToDisplay = R.drawable.neptune;
+
+        planetDisplay.setImageResource(imageToDisplay);
+    }
+
 
     /*
      *  Part of our fragment's API. Set visibility of the imagewiew.

@@ -29,14 +29,14 @@ public class MainActivity extends Activity implements NavFragment.OnFragmentInte
         bundle.putStringArray(NavFragment.dataKey, getResources().getStringArray(R.array.planets));
         navFragment.setArguments(bundle);
 
-        loadFragment(R.id.fragment_nav, navFragment, false);
+        loadFragment(R.id.fragment_nav, navFragment, true);
 
         /*
          *  Check if details pain is visible in current layout (e.g. large or landscape)
          *  and load fragment if true.
          */
         if (twoPanes){
-            loadFragment(R.id.fragment_details, new DetailsFragment(), false);
+            loadFragment(R.id.fragment_details, DetailsFragment.newInstance(null), true);
         }
     }
 
@@ -74,19 +74,33 @@ public class MainActivity extends Activity implements NavFragment.OnFragmentInte
         ft.commit();
 
         //  Ensure fragment is attachecd before attempting to call its public methods
-        fm.executePendingTransactions();
+         fm.executePendingTransactions();
     }
 
     @Override
     public void displayPlanetInfo(String planetName) {
-        DetailsFragment detailsFragment = new DetailsFragment();
 
-        Bundle bundle = new Bundle();
-        bundle.putString(DetailsFragment.dataKey, planetName);
-        detailsFragment.setArguments(bundle);
+        if (twoPanes){
+            ((DetailsFragment) getFragmentManager()
+                    .findFragmentById(R.id.fragment_details))
+                    .setPlanetToShow(planetName);
+        } else {
+            DetailsFragment fragment = DetailsFragment.newInstance(null);
+            loadFragment(R.id.fragment_nav, fragment, true);
+            fragment.setPlanetToShow(planetName);
+        }
 
-        loadFragment(twoPanes ? R.id.fragment_details : R.id.fragment_nav, detailsFragment, !twoPanes);
     }
 
 
 }
+
+
+
+
+
+
+
+
+
+
